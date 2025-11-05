@@ -2,22 +2,14 @@ from fastapi import FastAPI, Query
 from fastapi.responses import Response, JSONResponse
 import requests
 import base64
-import os
 
 app = FastAPI()
 
-GEMINI_API_KEY = os.getenv("gemini_api_key")
+GEMINI_API_KEY = "AIzaSyC2Fsjk3yCRA8hDVYgg5LlMn4sxwoJJaWU"
 API_ENDPOINT = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key={GEMINI_API_KEY}"
 
 @app.get("/")
 async def root(prompt: str = Query(None, description="Prompt for image generation")):
-    if not GEMINI_API_KEY:
-        return JSONResponse(
-            content={
-                "success": False,
-                "error": "missing environment variable: gemini_api_key"
-            }
-        )
     if not prompt or prompt.strip() == "":
         return JSONResponse(
             content={
